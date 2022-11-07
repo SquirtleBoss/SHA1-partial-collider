@@ -8,20 +8,21 @@ def IntToBytes(inputInt):
   return int(bin_data, 2).to_bytes((len(bin_data) + 7) // 8, byteorder='big').hex()
 
 def FindCollision(procnum, proccount, prefix, v, interval):
-  i = procnum * interval
-  while(1):
-    string = IntToBytes(i)
-    hash = hashlib.sha1(string.encode()).hexdigest()
-    if hash[:len(prefix)] == prefix:
-      v.value = i
-      break
-    i += 1
-    # leapfrogs over batches belonging to other processes when current batch finished
-    if i % interval == 0:
-      i += interval*(proccount-1) + 1
-    # stop if another process has found a solution
-    if v.value != 0:
-      break
+    i = procnum * interval
+    while(1):
+        string = IntToBytes(i)
+        hash = hashlib.sha1(string.encode()).hexdigest()
+        if hash[:len(prefix)] == prefix:
+            v.value = i
+            break
+        i += 1
+        # leapfrogs over batches belonging to other processes when current batch finished
+        if i % interval == 0:
+            print('batch ' + str(i - interval) + '-' + str(i) + ' checked')
+            i += interval*(proccount-1) + 1
+        # stop if another process has found a solution
+        if v.value != 0:
+            break
 
 if __name__ == "__main__":
     manager = multiprocessing.Manager()
