@@ -33,7 +33,7 @@ if __name__ == "__main__":
     manager = multiprocessing.Manager()
     numcpu = multiprocessing.cpu_count()
     # determines how much a process should work on at a time (batch)
-    intrvl = 5000
+    intrvl = 5000000
     # edit for chosen prefix to collide with *****
     prefix = 'e1aaf6de4fe0c4bbf5b8ca38ab89a741db53ec' 
     # prints number of CPUs available
