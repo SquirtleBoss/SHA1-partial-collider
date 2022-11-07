@@ -24,21 +24,20 @@ def FindCollision(procnum, proccount, prefix, v, interval):
       break
 
 if __name__ == "__main__":
-  manager = multiprocessing.Manager()
-  numcpu = multiprocessing.cpu_count()
-# determines how much a process should work on at a time (batch)
-  intrvl = 5000000
-# edit for chosen prefix to collide with *****
-  prefix = 'e1aaf6de4fe0c4bbf5b8ca38ab89a741db53ec'
-# prints number of CPUs available
-  print (numcpu)
-  v = manager.Value('i', 0)
-  procs = []
-  for i in range(numcpu):
-    proc = Process(target=FindCollision, args=(i, numcpu, prefix, v, intrvl))
-    procs.append(proc)
-    proc.start()
-  for proc in procs:
-    proc.join()
-
-print(IntToBytes(v.value))
+    manager = multiprocessing.Manager()
+    numcpu = multiprocessing.cpu_count()
+    # determines how much a process should work on at a time (batch)
+    intrvl = 5000000
+    # edit for chosen prefix to collide with *****
+    prefix = 'e1aaf6de4fe0c4bbf5b8ca38ab89a741db53ec' 
+    # prints number of CPUs available
+    print (numcpu)
+    v = manager.Value('i', 0)
+    procs = []
+    for i in range(numcpu):
+        proc = Process(target=FindCollision, args=(i, numcpu, prefix, v, intrvl))
+        procs.append(proc)
+        proc.start()
+    for proc in procs:
+        proc.join()
+    print(IntToBytes(v.value))
