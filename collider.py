@@ -4,14 +4,19 @@ from multiprocessing import Process, Value
 
 # Given an integer, turn it into binary then return hex representation
 def IntToBytes(inputInt):
-  bin_data = bin(inputInt)[2:]
-  return int(bin_data, 2).to_bytes((len(bin_data) + 7) // 8, byteorder='big').hex()
+    ret = ''
+    inputInt += 1
+    while(inputInt > 0):
+        n = inputInt % 96
+        ret = chr(n+31) + ret
+        inputInt = inputInt // 96
+    return ret.encode()
 
 def FindCollision(procnum, proccount, prefix, v, interval):
     i = procnum * interval
     while(1):
         string = IntToBytes(i)
-        hash = hashlib.sha1(string.encode()).hexdigest()
+        hash = hashlib.sha1(string).hexdigest()
         if hash[:len(prefix)] == prefix:
             v.value = i
             break
@@ -28,7 +33,7 @@ if __name__ == "__main__":
     manager = multiprocessing.Manager()
     numcpu = multiprocessing.cpu_count()
     # determines how much a process should work on at a time (batch)
-    intrvl = 5000000
+    intrvl = 5000
     # edit for chosen prefix to collide with *****
     prefix = 'e1aaf6de4fe0c4bbf5b8ca38ab89a741db53ec' 
     # prints number of CPUs available
