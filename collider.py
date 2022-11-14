@@ -13,7 +13,9 @@ def IntToBytes(inputInt):
     return ret.encode()
 
 def FindCollision(procnum, proccount, prefix, v, interval):
+    begin = 1350000000      #begin here
     i = procnum * interval
+    i += begin
     while(1):
         string = IntToBytes(i)
         hash = hashlib.sha1(string).hexdigest()
