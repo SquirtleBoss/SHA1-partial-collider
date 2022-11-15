@@ -13,7 +13,7 @@ def IntToBytes(inputInt):
     return ret.encode()
 
 def FindCollision(procnum, proccount, prefix, v, interval):
-    begin = 1350000000      #begin here
+    begin = 8153726974      #begin here for 6 char
     i = procnum * interval
     i += begin
     while(1):
