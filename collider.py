@@ -1,6 +1,8 @@
 import multiprocessing
 import hashlib
 from multiprocessing import Process, Value
+import random as rd
+import time
 
 # Given an integer, turn it into binary then return hex representation
 def IntToBytes(inputInt):
@@ -13,10 +15,9 @@ def IntToBytes(inputInt):
     return ret.encode()
 
 def FindCollision(procnum, proccount, prefix, v, interval):
-    begin = 8153726974      #begin here for 6 char
-    i = procnum * interval
-    i += begin
+    rd.seed(time.time() + procnum)
     while(1):
+        i = rd.randint(8153726976, 782757789696)
         string = IntToBytes(i)
         hash = hashlib.sha1(string).hexdigest()
         if hash[:len(prefix)] == prefix:
@@ -25,7 +26,7 @@ def FindCollision(procnum, proccount, prefix, v, interval):
         i += 1
         # leapfrogs over batches belonging to other processes when current batch finished
         if i % interval == 0:
-            print('batch ' + str(i - interval) + '-' + str(i) + ' checked')
+            print(str(procnum) + ': ' + str(interval) + ' random values checked')
             i += interval*(proccount-1) + 1
         # stop if another process has found a solution
         if v.value != 0:
